@@ -11,19 +11,23 @@
 </head>
 <body>
     <p id="message"></p>
-    <h1>數獨遊戲</h1>
+    <div class="header">
+        <h1>數獨遊戲</h1>
+        <button id="dark-mode-toggle" onclick="toggleDarkMode()">☀️</button>
+    </div>
     <div id="difficulty-dialog" class="dialog">
         <h2>選擇難度</h2>
-        <button onclick="startGame(30)">新手</button>
-        <button onclick="startGame(45)">老手</button>
-        <button onclick="startGame(55)">專精</button>
+        <div class="difficulty-buttons">
+            <button onclick="startGame(30)">新手</button>
+            <button onclick="startGame(45)">老手</button>
+            <button onclick="startGame(55)">專精</button>
+        </div>
     </div>
     <div id="game-container" class="hidden">
         <div id="sudoku-grid"></div>
         <div class="buttons">
             <button onclick="showDifficultyDialog()">新遊戲</button>
             <button onclick="checkSolution()">檢查答案</button>
-            <button onclick="toggleDarkMode()">切換暗黑模式</button>
             <button id="note-toggle" onclick="toggleNoteMode()">筆記模式：關</button>
         </div>
     </div>
@@ -43,7 +47,9 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                // 添加隨機查詢參數避免快取
+                const swUrl = '/sw.js?v=' + new Date().getTime();
+                navigator.serviceWorker.register(swUrl)
                     .then(reg => console.log('Service Worker 註冊成功', reg))
                     .catch(err => console.log('Service Worker 註冊失敗', err));
             });

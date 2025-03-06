@@ -160,6 +160,12 @@ function checkSolution() {
 }
 
 function showDifficultyDialog() {
+    // 確認是否離開當前遊戲
+    if (!document.getElementById('game-container').classList.contains('hidden')) {
+        if (!confirm('確定要離開當前遊戲嗎？進度將不會保存。')) {
+            return;
+        }
+    }
     document.getElementById('difficulty-dialog').classList.remove('hidden');
     document.getElementById('game-container').classList.add('hidden');
     document.getElementById('number-pad').classList.add('hidden');
@@ -187,6 +193,8 @@ function newGame() {
 
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    darkModeToggle.textContent = document.body.classList.contains('dark-mode') ? '🌙' : '☀️';
 }
 
 function toggleNoteMode() {
@@ -203,7 +211,6 @@ function selectCell(cell) {
     selectedCell = cell;
     selectedCell.classList.add('selected');
     document.getElementById('number-pad').classList.remove('hidden');
-    // 啟用數字鍵盤按鈕
     const numButtons = document.querySelectorAll('.num-btn');
     numButtons.forEach(button => button.classList.add('active'));
 }
@@ -243,10 +250,9 @@ function inputNumber(num) {
             }
         }
         document.getElementById('number-pad').classList.add('hidden');
-        selectedCell.classList.remove('selected');
-        // 禁用數字鍵盤按鈕
         const numButtons = document.querySelectorAll('.num-btn');
         numButtons.forEach(button => button.classList.remove('active'));
+        selectedCell.classList.remove('selected');
         selectedCell = null;
     }
 }
