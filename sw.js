@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sudoku-pwa-v1';
+const CACHE_NAME = 'sudoku-pwa-v2'; // 每次更新程式碼時改版本號，例如 v1 -> v2
 const urlsToCache = [
     '/',
     '/index.html',
@@ -14,8 +14,10 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
+                console.log('正在快取資源');
                 return cache.addAll(urlsToCache);
             })
+            .then(() => self.skipWaiting()) // 立即激活新 Service Worker
     );
 });
 
@@ -26,5 +28,17 @@ self.addEventListener('fetch', event => {
             .then(response => {
                 return response || fetch(event.request);
             })
+    );
+});
+
+// 激活時清除舊快取
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.filter(name => name !== CACHE_NAME)
+                    .map(name => caches.delete(name))
+            );
+        }).then(() => self.clients.claim()) // 立即控制所有頁面
     );
 });
