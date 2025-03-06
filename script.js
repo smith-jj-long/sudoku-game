@@ -17,7 +17,7 @@ function createGrid() {
                 selectCell(this);
             }
         });
-        input.addEventListener('click', function (e) { // 添加 click 事件以支援桌面
+        input.addEventListener('click', function (e) { // 支援桌面點擊
             e.preventDefault();
             if (!this.hasAttribute('readonly')) {
                 selectCell(this);
@@ -25,10 +25,6 @@ function createGrid() {
         });
         input.addEventListener('keydown', function (e) {
             e.preventDefault();
-        });
-        input.addEventListener('focus', function (e) {
-            e.preventDefault();
-            this.blur();
         });
         grid.appendChild(input);
     }
@@ -40,9 +36,9 @@ function bindNumberPadEvents() {
     const buttons = document.querySelectorAll('.num-btn');
     buttons.forEach(button => {
         button.removeEventListener('touchstart', handleNumberPadTouch);
-        button.removeEventListener('click', handleNumberPadTouch); // 支援桌面
+        button.removeEventListener('click', handleNumberPadTouch);
         button.addEventListener('touchstart', handleNumberPadTouch);
-        button.addEventListener('click', handleNumberPadTouch); // 支援桌面
+        button.addEventListener('click', handleNumberPadTouch);
     });
 }
 
@@ -163,7 +159,6 @@ function checkSolution() {
         message.style.color = document.body.classList.contains('dark-mode') ? '#ff4444' : '#dc3545';
     }
 
-    // 2 秒後淡出訊息
     setTimeout(() => {
         message.classList.add('hidden');
     }, 2000);
@@ -172,6 +167,10 @@ function checkSolution() {
 function showDifficultyDialog() {
     document.getElementById('difficulty-dialog').classList.remove('hidden');
     document.getElementById('number-pad').classList.add('hidden');
+    if (selectedCell) {
+        selectedCell.classList.remove('selected');
+        selectedCell = null;
+    }
 }
 
 function startGame(removeCount) {
@@ -198,10 +197,11 @@ function toggleNoteMode() {
 }
 
 function selectCell(cell) {
-    if (selectedCell === cell) return;
-    if (selectedCell) selectedCell.blur();
+    if (selectedCell) {
+        selectedCell.classList.remove('selected');
+    }
     selectedCell = cell;
-    selectedCell.focus();
+    selectedCell.classList.add('selected'); // 高亮選中格子
     document.getElementById('number-pad').classList.remove('hidden');
 }
 
@@ -237,7 +237,7 @@ function inputNumber(num) {
             }
         }
         document.getElementById('number-pad').classList.add('hidden');
-        selectedCell.blur();
+        selectedCell.classList.remove('selected');
         selectedCell = null;
     }
 }

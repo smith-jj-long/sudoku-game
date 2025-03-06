@@ -62,10 +62,20 @@ body.dark-mode h2 {
     position: relative;
 }
 
+.cell.selected { /* 新增選中效果 */
+    background-color: #e6f3ff;
+    border: 2px solid #007bff;
+}
+
 body.dark-mode .cell {
     background-color: #2c2c2c;
     color: #e0e0e0;
     border: 1px solid #444;
+}
+
+body.dark-mode .cell.selected {
+    background-color: #4a5e7a;
+    border: 2px solid #1e90ff;
 }
 
 .cell[readonly] {
@@ -77,15 +87,6 @@ body.dark-mode .cell {
 body.dark-mode .cell[readonly] {
     background-color: #3a3a3a;
     color: #bbb;
-}
-
-.cell:focus {
-    outline: none;
-    background-color: #e6f3ff;
-}
-
-body.dark-mode .cell:focus {
-    background-color: #4a5e7a;
 }
 
 .cell.notes::after {
@@ -177,18 +178,18 @@ body.dark-mode #note-toggle.active {
 #message {
     font-size: 18px;
     color: #28a745;
-    margin: 10px 0; /* 調整為最上方 */
+    margin: 10px 0;
     position: fixed;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
     z-index: 11;
     opacity: 1;
-    transition: opacity 0.5s ease-out; /* 淡出效果 */
+    transition: opacity 0.5s ease-out;
 }
 
 #message.hidden {
-    opacity: 0; /* 隱藏時透明 */
+    opacity: 0;
 }
 
 body.dark-mode #message {
