@@ -10,21 +10,21 @@ function createGrid() {
         const input = document.createElement('input');
         input.className = 'cell';
         input.type = 'text';
-        input.readOnly = true; // 禁用鍵盤輸入
-        input.addEventListener('touchstart', function (e) {
+        input.setAttribute('readonly', 'readonly'); // 禁用鍵盤輸入
+        input.addEventListener('touchend', function (e) { // 改用 touchend
             e.preventDefault();
             if (!this.hasAttribute('readonly')) {
                 selectCell(this);
             }
         });
-        input.addEventListener('click', function (e) { // 支援桌面點擊
+        input.addEventListener('click', function (e) { // 支援桌面
             e.preventDefault();
             if (!this.hasAttribute('readonly')) {
                 selectCell(this);
             }
         });
         input.addEventListener('keydown', function (e) {
-            e.preventDefault();
+            e.preventDefault(); // 阻止鍵盤輸入
         });
         grid.appendChild(input);
     }
@@ -35,9 +35,9 @@ function createGrid() {
 function bindNumberPadEvents() {
     const buttons = document.querySelectorAll('.num-btn');
     buttons.forEach(button => {
-        button.removeEventListener('touchstart', handleNumberPadTouch);
+        button.removeEventListener('touchend', handleNumberPadTouch); // 改用 touchend
         button.removeEventListener('click', handleNumberPadTouch);
-        button.addEventListener('touchstart', handleNumberPadTouch);
+        button.addEventListener('touchend', handleNumberPadTouch);
         button.addEventListener('click', handleNumberPadTouch);
     });
 }
@@ -201,7 +201,7 @@ function selectCell(cell) {
         selectedCell.classList.remove('selected');
     }
     selectedCell = cell;
-    selectedCell.classList.add('selected'); // 高亮選中格子
+    selectedCell.classList.add('selected');
     document.getElementById('number-pad').classList.remove('hidden');
 }
 
