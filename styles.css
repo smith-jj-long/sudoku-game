@@ -59,6 +59,7 @@ body.dark-mode h2 {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    position: relative; /* 為筆記定位提供參考 */
 }
 
 body.dark-mode .cell {
@@ -87,13 +88,17 @@ body.dark-mode .cell:focus {
     background-color: #4a5e7a;
 }
 
-.cell.notes {
+.cell.notes::after {
+    content: attr(data-notes); /* 顯示筆記數字 */
+    position: absolute;
+    top: 2px;
+    right: 2px;
     font-size: 10px;
     color: #777;
-    line-height: 40px;
+    line-height: 1;
 }
 
-body.dark-mode .cell.notes {
+body.dark-mode .cell.notes::after {
     color: #aaa;
 }
 
@@ -159,6 +164,14 @@ body.dark-mode button:hover {
 
 button:active {
     transform: translateY(0);
+}
+
+#note-toggle.active {
+    background-color: #28a745; /* 筆記模式啟用時變綠 */
+}
+
+body.dark-mode #note-toggle.active {
+    background-color: #2ecc71;
 }
 
 #message {

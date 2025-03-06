@@ -9,12 +9,15 @@ function createGrid() {
         const input = document.createElement('input');
         input.className = 'cell';
         input.type = 'text';
-        input.maxLength = 9;
+        input.readOnly = true; // 禁用鍵盤輸入
         input.addEventListener('touchstart', function (e) {
             e.preventDefault();
             if (!this.hasAttribute('readonly')) {
                 selectCell(this);
             }
+        });
+        input.addEventListener('keydown', function (e) {
+            e.preventDefault(); // 阻止鍵盤輸入
         });
         grid.appendChild(input);
     }
@@ -187,7 +190,9 @@ function toggleDarkMode() {
 
 function toggleNoteMode() {
     noteMode = !noteMode;
-    document.getElementById('note-toggle').textContent = `筆記模式：${noteMode ? '開' : '關'}`;
+    const noteToggle = document.getElementById('note-toggle');
+    noteToggle.textContent = `筆記模式：${noteMode ? '開' : '關'}`;
+    noteToggle.classList.toggle('active', noteMode); // 切換 active 類
 }
 
 function selectCell(cell) {
@@ -203,24 +208,35 @@ function inputNumber(num) {
         if (noteMode) {
             let notes = selectedCell.getAttribute('data-notes') || '';
             if (num === '') {
-                selectedCell.setAttribute('data-notes', '');
-                selectedCell.classList.remove('notes');
-                selectedCell.value = '';
-            } else if (notes.includes(num)) {
-                notes = notes.replace(num, '');
+                // 移除最後一個筆記數字
+                let notesArray = notes.split(',').filter(Boolean);
+                notesArray.pop();
+                notes = notesArray.join(',');
                 selectedCell.setAttribute('data-notes', notes);
                 selectedCell.classList.toggle('notes', notes.length > 0);
-                selectedCell.value = notes;
+                selectedCell.value = '';
+            } else if (notes.includes(num)) {
+                // 移除已存在的數字
+                notes = notes.split(',').filter(n => n !== num).join(',');
+                selectedCell.setAttribute('data-notes', notes);
+                selectedCell.classList.toggle('notes', notes.length > 0);
+                selectedCell.value = '';
             } else {
-                notes += num;
+                // 添加新數字，用逗號分隔
+                notes = notes ? `${notes},${num}` : num;
                 selectedCell.setAttribute('data-notes', notes);
                 selectedCell.classList.add('notes');
-                selectedCell.value = notes;
+                selectedCell.value = '';
             }
         } else {
-            selectedCell.value = num;
-            selectedCell.removeAttribute('data-notes');
-            selectedCell.classList.remove('notes');
+            if (num === '') {
+                // 只清除正常數字，不影響筆記
+                selectedCell.value = '';
+            } else {
+                selectedCell.value = num;
+                selectedCell.removeAttribute('data-notes');
+                selectedCell.classList.remove('notes');
+            }
         }
         document.getElementById('number-pad').classList.add('hidden');
         selectedCell.blur();

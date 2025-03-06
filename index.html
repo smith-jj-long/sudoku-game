@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>數獨遊戲</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json"> <!-- 引入 PWA 配置文件 -->
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <h1>數獨遊戲</h1>
@@ -41,7 +41,6 @@
     </div>
     <script src="script.js"></script>
     <script>
-        // 註冊 Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
