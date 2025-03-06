@@ -59,7 +59,7 @@ body.dark-mode h2 {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    position: relative; /* 為筆記定位提供參考 */
+    position: relative;
 }
 
 body.dark-mode .cell {
@@ -89,7 +89,7 @@ body.dark-mode .cell:focus {
 }
 
 .cell.notes::after {
-    content: attr(data-notes); /* 顯示筆記數字 */
+    content: attr(data-notes);
     position: absolute;
     top: 2px;
     right: 2px;
@@ -167,7 +167,7 @@ button:active {
 }
 
 #note-toggle.active {
-    background-color: #28a745; /* 筆記模式啟用時變綠 */
+    background-color: #28a745;
 }
 
 body.dark-mode #note-toggle.active {
@@ -177,7 +177,9 @@ body.dark-mode #note-toggle.active {
 #message {
     font-size: 18px;
     color: #28a745;
-    margin-top: 20px;
+    margin-top: 80px; /* 調整位置，避免被數字鍵盤遮住 */
+    position: relative;
+    z-index: 11; /* 確保在數字鍵盤上方 */
 }
 
 body.dark-mode #message {

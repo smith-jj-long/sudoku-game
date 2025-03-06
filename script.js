@@ -1,6 +1,7 @@
 let currentDifficulty = 45;
 let selectedCell = null;
 let noteMode = false;
+let solutionBoard = null; // 儲存完整解答
 
 function createGrid() {
     const grid = document.getElementById('sudoku-grid');
@@ -18,6 +19,10 @@ function createGrid() {
         });
         input.addEventListener('keydown', function (e) {
             e.preventDefault(); // 阻止鍵盤輸入
+        });
+        input.addEventListener('focus', function (e) {
+            e.preventDefault(); // 阻止鍵盤彈出
+            this.blur(); // 移除焦點
         });
         grid.appendChild(input);
     }
@@ -108,6 +113,7 @@ function generatePuzzle(removeCount) {
 
     fillDiagonal();
     solveSudoku(board);
+    solutionBoard = board.slice(); // 儲存完整解答
     const puzzle = removeCells(board, removeCount);
 
     const cells = document.querySelectorAll('.cell');
@@ -124,45 +130,28 @@ function checkSolution() {
         return value && !cell.classList.contains('notes') ? parseInt(value) : 0;
     });
     const message = document.getElementById('message');
+    let isCorrect = true;
+    let hasInput = false;
 
-    function isValidSudoku(board) {
-        for (let row = 0; row < 9; row++) {
-            if (!isValidUnit(board.slice(row * 9, row * 9 + 9))) return false;
-        }
-        for (let col = 0; col < 9; col++) {
-            const column = [];
-            for (let row = 0; row < 9; row++) column.push(board[row * 9 + col]);
-            if (!isValidUnit(column)) return false;
-        }
-        for (let boxRow = 0; boxRow < 3; boxRow++) {
-            for (let boxCol = 0; boxCol < 3; boxCol++) {
-                const box = [];
-                for (let i = 0; i < 3; i++) {
-                    for (let j = 0; j < 3; j++) {
-                        box.push(board[(boxRow * 3 + i) * 9 + (boxCol * 3 + j)]);
-                    }
-                }
-                if (!isValidUnit(box)) return false;
+    // 檢查已輸入的數字是否正確
+    for (let i = 0; i < 81; i++) {
+        if (userInput[i] !== 0) {
+            hasInput = true;
+            if (userInput[i] !== solutionBoard[i]) {
+                isCorrect = false;
+                break;
             }
         }
-        return true;
     }
 
-    function isValidUnit(unit) {
-        const seen = new Set();
-        for (let num of unit) {
-            if (num === 0) return false;
-            if (seen.has(num)) return false;
-            seen.add(num);
-        }
-        return true;
-    }
-
-    if (isValidSudoku(userInput)) {
-        message.textContent = '恭喜！答案正確！';
+    if (!hasInput) {
+        message.textContent = '請先輸入一些數字！';
+        message.style.color = '#ff9800'; // 橙色提示
+    } else if (isCorrect) {
+        message.textContent = '目前輸入的數字正確！';
         message.style.color = document.body.classList.contains('dark-mode') ? '#2ecc71' : '#28a745';
     } else {
-        message.textContent = '答案有誤，請再試一次。';
+        message.textContent = '有數字輸入錯誤，請檢查！';
         message.style.color = document.body.classList.contains('dark-mode') ? '#ff4444' : '#dc3545';
     }
 }
@@ -192,7 +181,7 @@ function toggleNoteMode() {
     noteMode = !noteMode;
     const noteToggle = document.getElementById('note-toggle');
     noteToggle.textContent = `筆記模式：${noteMode ? '開' : '關'}`;
-    noteToggle.classList.toggle('active', noteMode); // 切換 active 類
+    noteToggle.classList.toggle('active', noteMode);
 }
 
 function selectCell(cell) {
@@ -208,7 +197,6 @@ function inputNumber(num) {
         if (noteMode) {
             let notes = selectedCell.getAttribute('data-notes') || '';
             if (num === '') {
-                // 移除最後一個筆記數字
                 let notesArray = notes.split(',').filter(Boolean);
                 notesArray.pop();
                 notes = notesArray.join(',');
@@ -216,13 +204,11 @@ function inputNumber(num) {
                 selectedCell.classList.toggle('notes', notes.length > 0);
                 selectedCell.value = '';
             } else if (notes.includes(num)) {
-                // 移除已存在的數字
                 notes = notes.split(',').filter(n => n !== num).join(',');
                 selectedCell.setAttribute('data-notes', notes);
                 selectedCell.classList.toggle('notes', notes.length > 0);
                 selectedCell.value = '';
             } else {
-                // 添加新數字，用逗號分隔
                 notes = notes ? `${notes},${num}` : num;
                 selectedCell.setAttribute('data-notes', notes);
                 selectedCell.classList.add('notes');
@@ -230,7 +216,6 @@ function inputNumber(num) {
             }
         } else {
             if (num === '') {
-                // 只清除正常數字，不影響筆記
                 selectedCell.value = '';
             } else {
                 selectedCell.value = num;
