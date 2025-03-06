@@ -1,7 +1,7 @@
 {
     "name": "數獨遊戲",
     "short_name": "數獨",
-    "description": "一個簡單的數獨遊戲 PWA",
+    "description": "一個簡單嘅數獨遊戲 PWA",
     "start_url": "/index.html",
     "display": "standalone",
     "background_color": "#f4f4f9",
