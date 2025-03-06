@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sudoku-pwa-v5'; // 更新版本號
+const CACHE_NAME = 'sudoku-pwa-v6'; // 更新版本號
 const urlsToCache = [
     '/',
     '/index.html',
@@ -22,10 +22,9 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
     event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                return response || fetch(event.request);
-            })
+        fetch(event.request).catch(() => {
+            return caches.match(event.request); // 離線時使用快取
+        })
     );
 });
 
