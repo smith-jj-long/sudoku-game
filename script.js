@@ -203,6 +203,9 @@ function selectCell(cell) {
     selectedCell = cell;
     selectedCell.classList.add('selected');
     document.getElementById('number-pad').classList.remove('hidden');
+    // 啟用數字鍵盤按鈕
+    const numButtons = document.querySelectorAll('.num-btn');
+    numButtons.forEach(button => button.classList.add('active'));
 }
 
 function inputNumber(num) {
@@ -210,26 +213,23 @@ function inputNumber(num) {
         if (noteMode) {
             let notes = selectedCell.getAttribute('data-notes') || '';
             if (num === '') {
-                // 清除時逐步移除最後一個筆記數字
                 let notesArray = notes.split(',').filter(Boolean);
                 notesArray.pop();
                 notes = notesArray.join(',');
                 selectedCell.setAttribute('data-notes', notes);
                 selectedCell.classList.toggle('notes', notes.length > 0);
-                selectedCell.textContent = ''; // 清空主顯示，只顯示筆記
+                selectedCell.textContent = '';
             } else {
                 let notesArray = notes.split(',').filter(Boolean);
                 if (notesArray.includes(num)) {
-                    // 如果數字已存在，移除該數字
                     notesArray = notesArray.filter(n => n !== num);
                 } else {
-                    // 添加新數字
                     notesArray.push(num);
                 }
-                notes = notesArray.join(','); // 用逗號分隔
+                notes = notesArray.join(',');
                 selectedCell.setAttribute('data-notes', notes);
                 selectedCell.classList.add('notes');
-                selectedCell.textContent = ''; // 清空主顯示，只顯示筆記
+                selectedCell.textContent = '';
             }
         } else {
             if (num === '') {
@@ -244,6 +244,9 @@ function inputNumber(num) {
         }
         document.getElementById('number-pad').classList.add('hidden');
         selectedCell.classList.remove('selected');
+        // 禁用數字鍵盤按鈕
+        const numButtons = document.querySelectorAll('.num-btn');
+        numButtons.forEach(button => button.classList.remove('active'));
         selectedCell = null;
     }
 }

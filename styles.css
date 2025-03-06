@@ -244,6 +244,30 @@ body.dark-mode .number-pad {
     height: 50px;
     padding: 0;
     font-size: 18px;
+    background-color: #ccc; /* 初始灰色 */
+    color: #666;
+    border: none;
+    border-radius: 5px;
+    cursor: default;
+    pointer-events: none; /* 初始禁用 */
+    transition: background-color 0.3s, color 0.3s; /* 過渡效果 */
+}
+
+.number-pad button.active {
+    background-color: #007bff; /* 啟用時藍色 */
+    color: white;
+    cursor: pointer;
+    pointer-events: auto; /* 啟用點擊 */
+}
+
+body.dark-mode .number-pad button {
+    background-color: #555; /* 暗模式初始灰色 */
+    color: #aaa;
+}
+
+body.dark-mode .number-pad button.active {
+    background-color: #1e90ff; /* 暗模式啟用藍色 */
+    color: white;
 }
 
 .number-pad .clear {
@@ -254,10 +278,27 @@ body.dark-mode .number-pad .clear {
     background-color: #ff4444;
 }
 
-.number-pad .clear:hover {
+.number-pad .clear.active {
+    background-color: #dc3545; /* 清除按鈕啟用時紅色 */
+}
+
+body.dark-mode .number-pad .clear.active {
+    background-color: #ff4444;
+}
+
+.number-pad button:hover.active {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+body.dark-mode .number-pad button:hover.active {
+    background-color: #187bcd;
+}
+
+.number-pad .clear:hover.active {
     background-color: #c82333;
 }
 
-body.dark-mode .number-pad .clear:hover {
+body.dark-mode .number-pad .clear:hover.active {
     background-color: #cc3333;
 }

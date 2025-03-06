@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sudoku-pwa-v2'; // 每次更新程式碼時改版本號，例如 v1 -> v2
+const CACHE_NAME = 'sudoku-pwa-v3'; // 每次更新程式碼時改版本號，例如 v1 -> v2
 const urlsToCache = [
     '/',
     '/index.html',
