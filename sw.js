@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sudoku-pwa-v6'; // 更新版本號
+const CACHE_NAME = 'sudoku-pwa-v8'; // 更新版本號
 const urlsToCache = [
     '/',
     '/index.html',

@@ -57,7 +57,7 @@ body.dark-mode h2 {
 }
 
 body.dark-mode #sudoku-grid {
-    background-color: #666; /* 暗模式下更淺嘅背景提升粗線對比 */
+    background-color: #666;
     border: 2px solid #666;
 }
 
@@ -127,7 +127,7 @@ body.dark-mode .cell.notes::after {
 }
 
 body.dark-mode .cell:nth-child(3n) {
-    border-right: 3px solid #888; /* 暗模式粗線更明顯 */
+    border-right: 3px solid #888;
 }
 
 .cell:nth-child(n+19):nth-child(-n+27),
@@ -139,7 +139,7 @@ body.dark-mode .cell:nth-child(3n) {
 body.dark-mode .cell:nth-child(n+19):nth-child(-n+27),
 body.dark-mode .cell:nth-child(n+46):nth-child(-n+54),
 body.dark-mode .cell:nth-child(n+73):nth-child(-n+81) {
-    border-bottom: 3px solid #888; /* 暗模式粗線更明顯 */
+    border-bottom: 3px solid #888;
 }
 
 .cell:nth-child(9n) {
@@ -236,24 +236,23 @@ body.dark-mode #dark-mode-toggle:hover {
     color: #28a745;
     margin: 10px 0;
     padding: 10px 20px;
-    background-color: rgba(255, 255, 255, 0.9); /* 添加背景色 */
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 5px;
     position: fixed;
-    top: 80px; /* 移到格子上方 */
+    top: 80px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 11;
-    opacity: 1;
-    transition: opacity 0.5s ease-out;
+    white-space: nowrap;
 }
 
 #message.hidden {
-    opacity: 0;
+    display: none; /* 確保隱藏時無背景 */
 }
 
 body.dark-mode #message {
     color: #2ecc71;
-    background-color: rgba(42, 42, 42, 0.9); /* 暗模式背景 */
+    background-color: rgba(42, 42, 42, 0.9);
 }
 
 .dialog {

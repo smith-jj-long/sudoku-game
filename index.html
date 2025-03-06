@@ -13,7 +13,7 @@
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <p id="message"></p>
+    <p id="message" class="hidden"></p> <!-- 添加 hidden 類 -->
     <div class="header">
         <h1>數獨遊戲</h1>
         <button id="dark-mode-toggle" onclick="toggleDarkMode()">☀️</button>
@@ -54,12 +54,11 @@
                 navigator.serviceWorker.register(swUrl)
                     .then(reg => {
                         console.log('Service Worker 註冊成功', reg);
-                        // 檢查是否有新版本並刷新
                         reg.onupdatefound = () => {
                             const installingWorker = reg.installing;
                             installingWorker.onstatechange = () => {
                                 if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    window.location.reload(); // 自動刷新頁面
+                                    window.location.reload();
                                 }
                             };
                         };

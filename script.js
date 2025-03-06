@@ -160,7 +160,6 @@ function checkSolution() {
 }
 
 function showDifficultyDialog() {
-    // 確認是否離開當前遊戲
     if (!document.getElementById('game-container').classList.contains('hidden')) {
         if (!confirm('確定要離開當前遊戲嗎？進度將不會保存。')) {
             return;
