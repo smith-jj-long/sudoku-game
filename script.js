@@ -210,26 +210,32 @@ function inputNumber(num) {
         if (noteMode) {
             let notes = selectedCell.getAttribute('data-notes') || '';
             if (num === '') {
+                // 清除時逐步移除最後一個筆記數字
                 let notesArray = notes.split(',').filter(Boolean);
                 notesArray.pop();
                 notes = notesArray.join(',');
                 selectedCell.setAttribute('data-notes', notes);
                 selectedCell.classList.toggle('notes', notes.length > 0);
-                selectedCell.textContent = '';
-            } else if (notes.includes(num)) {
-                notes = notes.split(',').filter(n => n !== num).join(',');
-                selectedCell.setAttribute('data-notes', notes);
-                selectedCell.classList.toggle('notes', notes.length > 0);
-                selectedCell.textContent = '';
+                selectedCell.textContent = ''; // 清空主顯示，只顯示筆記
             } else {
-                notes = notes ? `${notes},${num}` : num;
+                let notesArray = notes.split(',').filter(Boolean);
+                if (notesArray.includes(num)) {
+                    // 如果數字已存在，移除該數字
+                    notesArray = notesArray.filter(n => n !== num);
+                } else {
+                    // 添加新數字
+                    notesArray.push(num);
+                }
+                notes = notesArray.join(','); // 用逗號分隔
                 selectedCell.setAttribute('data-notes', notes);
                 selectedCell.classList.add('notes');
-                selectedCell.textContent = '';
+                selectedCell.textContent = ''; // 清空主顯示，只顯示筆記
             }
         } else {
             if (num === '') {
                 selectedCell.textContent = '';
+                selectedCell.removeAttribute('data-notes');
+                selectedCell.classList.remove('notes');
             } else {
                 selectedCell.textContent = num;
                 selectedCell.removeAttribute('data-notes');
