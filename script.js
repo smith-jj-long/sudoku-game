@@ -117,7 +117,7 @@ function generatePuzzle(removeCount) {
 
     const cells = document.querySelectorAll('.cell');
     puzzle.forEach((num, index) => {
-        cells[index].textContent = num === 0 ? '' : num; // 使用 textContent
+        cells[index].textContent = num === 0 ? '' : num;
         if (num !== 0) cells[index].setAttribute('readonly', 'readonly');
     });
 }
@@ -175,6 +175,10 @@ function startGame(removeCount) {
     document.getElementById('game-container').classList.remove('hidden');
     newGame();
 }
+
+// 初始顯示難度選擇畫面
+document.getElementById('game-container').classList.add('hidden');
+document.getElementById('difficulty-dialog').classList.remove('hidden');
 
 function newGame() {
     createGrid();

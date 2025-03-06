@@ -61,7 +61,7 @@ body.dark-mode h2 {
     pointer-events: auto;
     display: flex;
     align-items: center;
-    justify-content: center; /* 確保內容居中 */
+    justify-content: center;
 }
 
 .cell.selected {
