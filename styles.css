@@ -177,9 +177,18 @@ body.dark-mode #note-toggle.active {
 #message {
     font-size: 18px;
     color: #28a745;
-    margin-top: 80px; /* 調整位置，避免被數字鍵盤遮住 */
-    position: relative;
-    z-index: 11; /* 確保在數字鍵盤上方 */
+    margin: 10px 0; /* 調整為最上方 */
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 11;
+    opacity: 1;
+    transition: opacity 0.5s ease-out; /* 淡出效果 */
+}
+
+#message.hidden {
+    opacity: 0; /* 隱藏時透明 */
 }
 
 body.dark-mode #message {

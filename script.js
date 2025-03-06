@@ -1,7 +1,7 @@
 let currentDifficulty = 45;
 let selectedCell = null;
 let noteMode = false;
-let solutionBoard = null; // 儲存完整解答
+let solutionBoard = null;
 
 function createGrid() {
     const grid = document.getElementById('sudoku-grid');
@@ -17,12 +17,18 @@ function createGrid() {
                 selectCell(this);
             }
         });
+        input.addEventListener('click', function (e) { // 添加 click 事件以支援桌面
+            e.preventDefault();
+            if (!this.hasAttribute('readonly')) {
+                selectCell(this);
+            }
+        });
         input.addEventListener('keydown', function (e) {
-            e.preventDefault(); // 阻止鍵盤輸入
+            e.preventDefault();
         });
         input.addEventListener('focus', function (e) {
-            e.preventDefault(); // 阻止鍵盤彈出
-            this.blur(); // 移除焦點
+            e.preventDefault();
+            this.blur();
         });
         grid.appendChild(input);
     }
@@ -34,7 +40,9 @@ function bindNumberPadEvents() {
     const buttons = document.querySelectorAll('.num-btn');
     buttons.forEach(button => {
         button.removeEventListener('touchstart', handleNumberPadTouch);
+        button.removeEventListener('click', handleNumberPadTouch); // 支援桌面
         button.addEventListener('touchstart', handleNumberPadTouch);
+        button.addEventListener('click', handleNumberPadTouch); // 支援桌面
     });
 }
 
@@ -113,7 +121,7 @@ function generatePuzzle(removeCount) {
 
     fillDiagonal();
     solveSudoku(board);
-    solutionBoard = board.slice(); // 儲存完整解答
+    solutionBoard = board.slice();
     const puzzle = removeCells(board, removeCount);
 
     const cells = document.querySelectorAll('.cell');
@@ -133,7 +141,6 @@ function checkSolution() {
     let isCorrect = true;
     let hasInput = false;
 
-    // 檢查已輸入的數字是否正確
     for (let i = 0; i < 81; i++) {
         if (userInput[i] !== 0) {
             hasInput = true;
@@ -144,9 +151,10 @@ function checkSolution() {
         }
     }
 
+    message.classList.remove('hidden');
     if (!hasInput) {
         message.textContent = '請先輸入一些數字！';
-        message.style.color = '#ff9800'; // 橙色提示
+        message.style.color = '#ff9800';
     } else if (isCorrect) {
         message.textContent = '目前輸入的數字正確！';
         message.style.color = document.body.classList.contains('dark-mode') ? '#2ecc71' : '#28a745';
@@ -154,6 +162,11 @@ function checkSolution() {
         message.textContent = '有數字輸入錯誤，請檢查！';
         message.style.color = document.body.classList.contains('dark-mode') ? '#ff4444' : '#dc3545';
     }
+
+    // 2 秒後淡出訊息
+    setTimeout(() => {
+        message.classList.add('hidden');
+    }, 2000);
 }
 
 function showDifficultyDialog() {

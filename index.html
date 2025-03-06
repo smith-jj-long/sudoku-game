@@ -10,6 +10,7 @@
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
+    <p id="message"></p> <!-- 將訊息移到最上方 -->
     <h1>數獨遊戲</h1>
     <div id="difficulty-dialog" class="dialog">
         <h2>選擇難度</h2>
@@ -25,7 +26,6 @@
             <button onclick="toggleDarkMode()">切換暗黑模式</button>
             <button id="note-toggle" onclick="toggleNoteMode()">筆記模式：關</button>
         </div>
-        <p id="message"></p>
     </div>
     <div id="number-pad" class="number-pad hidden">
         <button class="num-btn" data-num="1">1</button>
