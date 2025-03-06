@@ -11,21 +11,26 @@ function createGrid() {
         input.className = 'cell';
         input.type = 'text';
         input.setAttribute('readonly', 'readonly'); // 禁用鍵盤輸入
-        input.addEventListener('touchend', function (e) { // 改用 touchend
+        // 支援觸控和點擊
+        input.addEventListener('touchstart', function (e) {
+            e.preventDefault();
+            if (!this.hasAttribute('readonly')) {
+                selectCell(this);
+            }
+        }, { passive: false });
+        input.addEventListener('click', function (e) {
             e.preventDefault();
             if (!this.hasAttribute('readonly')) {
                 selectCell(this);
             }
         });
-        input.addEventListener('click', function (e) { // 支援桌面
+        // 添加 touchend 作為備用，增強兼容性
+        input.addEventListener('touchend', function (e) {
             e.preventDefault();
             if (!this.hasAttribute('readonly')) {
                 selectCell(this);
             }
-        });
-        input.addEventListener('keydown', function (e) {
-            e.preventDefault(); // 阻止鍵盤輸入
-        });
+        }, { passive: false });
         grid.appendChild(input);
     }
     document.getElementById('number-pad').classList.add('hidden');
@@ -35,9 +40,9 @@ function createGrid() {
 function bindNumberPadEvents() {
     const buttons = document.querySelectorAll('.num-btn');
     buttons.forEach(button => {
-        button.removeEventListener('touchend', handleNumberPadTouch); // 改用 touchend
+        button.removeEventListener('touchstart', handleNumberPadTouch);
         button.removeEventListener('click', handleNumberPadTouch);
-        button.addEventListener('touchend', handleNumberPadTouch);
+        button.addEventListener('touchstart', handleNumberPadTouch, { passive: false });
         button.addEventListener('click', handleNumberPadTouch);
     });
 }
