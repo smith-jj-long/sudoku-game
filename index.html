@@ -8,106 +8,62 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>遊戲選擇</title>
-    <link rel="stylesheet" href="styles.css?v=1.1"> <!-- 加版本號避免快取 -->
+    <title>數獨遊戲</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <p id="message" class="hidden"></p>
-    <div id="game-selection" class="dialog">
-        <h2>選擇遊戲</h2>
-        <div class="game-buttons">
-            <button onclick="startGame('sudoku')">數獨遊戲</button>
-            <button onclick="startGame('mahjong')">打香港麻雀</button>
-            <button onclick="startGame('solitaire')">紙牌接龍</button>
+    <div class="header">
+        <h1>數獨遊戲</h1>
+        <button id="dark-mode-toggle" onclick="toggleDarkMode()">☀️</button>
+    </div>
+    <div id="difficulty-dialog" class="dialog">
+        <h2>選擇難度</h2>
+        <div class="difficulty-buttons">
+            <button onclick="startGame(30)">新手</button>
+            <button onclick="startGame(45)">老手</button>
+            <button onclick="startGame(55)">專精</button>
         </div>
     </div>
-
-    <!-- 數獨遊戲 -->
-    <div id="sudoku-container" class="game-container hidden">
-        <div class="header">
-            <h1>數獨遊戲</h1>
-            <button id="dark-mode-toggle" onclick="toggleDarkMode()">☀️</button>
-        </div>
-        <div id="difficulty-dialog" class="dialog hidden">
-            <h2>選擇難度</h2>
-            <div class="difficulty-buttons">
-                <button onclick="startSudoku(30)">新手</button>
-                <button onclick="startSudoku(45)">老手</button>
-                <button onclick="startSudoku(55)">專精</button>
-            </div>
-        </div>
-        <div id="sudoku-game" class="hidden">
-            <div id="sudoku-grid"></div>
-            <div class="buttons">
-                <button id="new-sudoku-game" onclick="showSudokuDifficultyDialog()">新遊戲</button>
-                <button id="check-sudoku-solution" onclick="checkSudokuSolution()">檢查答案</button>
-                <button id="note-toggle" onclick="toggleNoteMode()">筆記模式：關</button>
-                <button id="back-to-selection-sudoku" onclick="confirmBackToSelection()">返回遊戲選單</button>
-            </div>
-        </div>
-        <div id="number-pad" class="number-pad hidden">
-            <button class="num-btn" data-num="1">1</button>
-            <button class="num-btn" data-num="2">2</button>
-            <button class="num-btn" data-num="3">3</button>
-            <button class="num-btn" data-num="4">4</button>
-            <button class="num-btn" data-num="5">5</button>
-            <button class="num-btn" data-num="6">6</button>
-            <button class="num-btn" data-num="7">7</button>
-            <button class="num-btn" data-num="8">8</button>
-            <button class="num-btn" data-num="9">9</button>
-            <button class="num-btn clear" data-num="">清除</button>
-        </div>
-    </div>
-
-    <!-- 打香港麻雀 -->
-    <div id="mahjong-container" class="game-container hidden">
-        <div class="header">
-            <h1>打香港麻雀</h1>
-            <button onclick="confirmBackToSelection()">返回遊戲選單</button>
-        </div>
-        <div id="mahjong-table">
-            <div id="mahjong-discard" class="mahjong-area discard-area"></div>
-            <div id="mahjong-players" class="mahjong-players">
-                <div id="player-0" class="player-hand"></div>
-                <div id="player-1" class="player-hand ai-hand"></div>
-                <div id="player-2" class="player-hand ai-hand"></div>
-                <div id="player-3" class="player-hand ai-hand"></div>
-            </div>
-        </div>
+    <div id="game-container" class="hidden">
+        <div id="sudoku-grid"></div>
         <div class="buttons">
-            <button onclick="startMahjong()">新遊戲</button>
-            <button onclick="drawMahjongTile()">摸牌</button>
-            <button onclick="discardSelectedTile()">出牌</button>
+            <button onclick="showDifficultyDialog()">新遊戲</button>
+            <button onclick="checkSolution()">檢查答案</button>
+            <button id="note-toggle" onclick="toggleNoteMode()">筆記模式：關</button>
         </div>
     </div>
-
-    <!-- 紙牌接龍 -->
-    <div id="solitaire-container" class="game-container hidden">
-        <div class="header">
-            <h1>紙牌接龍</h1>
-            <button onclick="confirmBackToSelection()">返回遊戲選單</button>
-        </div>
-        <div id="solitaire-table">
-            <div id="solitaire-stock" class="solitaire-pile"></div>
-            <div id="solitaire-waste" class="solitaire-pile"></div>
-            <div id="solitaire-foundations" class="solitaire-pile foundations"></div>
-            <div id="solitaire-tableau" class="solitaire-pile tableau"></div>
-        </div>
-        <div class="buttons">
-            <button onclick="startSolitaire()">新遊戲</button>
-            <button onclick="drawSolitaireCard()">發牌</button>
-        </div>
+    <div id="number-pad" class="number-pad hidden">
+        <button class="num-btn" data-num="1">1</button>
+        <button class="num-btn" data-num="2">2</button>
+        <button class="num-btn" data-num="3">3</button>
+        <button class="num-btn" data-num="4">4</button>
+        <button class="num-btn" data-num="5">5</button>
+        <button class="num-btn" data-num="6">6</button>
+        <button class="num-btn" data-num="7">7</button>
+        <button class="num-btn" data-num="8">8</button>
+        <button class="num-btn" data-num="9">9</button>
+        <button class="num-btn clear" data-num="">清除</button>
     </div>
-
-    <div id="confetti-container"></div>
-    <script src="script.js?v=1.1"></script> <!-- 加版本號避免快取 -->
+    <div id="confetti-container"></div> <!-- 拉炮特效容器 -->
+    <script src="script.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 const swUrl = '/sw.js?v=' + new Date().getTime();
                 navigator.serviceWorker.register(swUrl)
-                    .then(reg => console.log('Service Worker 註冊成功', reg))
+                    .then(reg => {
+                        console.log('Service Worker 註冊成功', reg);
+                        reg.onupdatefound = () => {
+                            const installingWorker = reg.installing;
+                            installingWorker.onstatechange = () => {
+                                if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    window.location.reload();
+                                }
+                            };
+                        };
+                    })
                     .catch(err => console.log('Service Worker 註冊失敗', err));
             });
         }
