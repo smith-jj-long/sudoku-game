@@ -13,7 +13,7 @@
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <p id="message" class="hidden"></p> <!-- 添加 hidden 類 -->
+    <p id="message" class="hidden"></p>
     <div class="header">
         <h1>數獨遊戲</h1>
         <button id="dark-mode-toggle" onclick="toggleDarkMode()">☀️</button>
@@ -46,6 +46,7 @@
         <button class="num-btn" data-num="9">9</button>
         <button class="num-btn clear" data-num="">清除</button>
     </div>
+    <div id="confetti-container"></div> <!-- 拉炮特效容器 -->
     <script src="script.js"></script>
     <script>
         if ('serviceWorker' in navigator) {

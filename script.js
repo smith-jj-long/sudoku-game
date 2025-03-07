@@ -122,7 +122,7 @@ function generatePuzzle(removeCount) {
     });
 }
 
-function checkSolution() {
+function checkSolution(autoCheck = false) {
     const cells = document.querySelectorAll('.cell');
     const userInput = Array.from(cells).map(cell => {
         const value = cell.textContent;
@@ -147,8 +147,18 @@ function checkSolution() {
         message.textContent = '請先輸入一些數字！';
         message.style.color = '#ff9800';
     } else if (isCorrect) {
-        message.textContent = '目前輸入嘅數字正確！';
+        message.textContent = autoCheck ? '答案全部正確！' : '目前輸入嘅數字正確！';
         message.style.color = document.body.classList.contains('dark-mode') ? '#2ecc71' : '#28a745';
+        if (autoCheck) {
+            triggerConfetti(); // 觸發拉炮特效
+            setTimeout(() => {
+                if (confirm('答案全部正確！是否想重置遊戲再玩？')) {
+                    newGame();
+                }
+                message.classList.add('hidden');
+            }, 2000);
+            return;
+        }
     } else {
         message.textContent = '有數字輸入錯誤，請檢查！';
         message.style.color = document.body.classList.contains('dark-mode') ? '#ff4444' : '#dc3545';
@@ -157,6 +167,19 @@ function checkSolution() {
     setTimeout(() => {
         message.classList.add('hidden');
     }, 2000);
+}
+
+function triggerConfetti() {
+    const container = document.getElementById('confetti-container');
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`; // 隨機顏色
+        confetti.style.animationDelay = Math.random() * 2 + 's'; // 隨機延遲
+        container.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 3000); // 3秒後移除
+    }
 }
 
 function showDifficultyDialog() {
@@ -181,7 +204,6 @@ function startGame(removeCount) {
     newGame();
 }
 
-// 初始顯示難度選擇畫面
 document.getElementById('game-container').classList.add('hidden');
 document.getElementById('difficulty-dialog').classList.remove('hidden');
 
@@ -249,9 +271,16 @@ function inputNumber(num) {
             }
         }
         document.getElementById('number-pad').classList.add('hidden');
-        const numButtons = document.querySelectorAll('.num-btn');
-        numButtons.forEach(button => button.classList.remove('active'));
         selectedCell.classList.remove('selected');
         selectedCell = null;
+
+        // 檢查是否所有格子已填滿
+        const cells = document.querySelectorAll('.cell');
+        const allFilled = Array.from(cells).every(cell => cell.textContent !== '');
+        if (allFilled) {
+            if (confirm('所有格子已填滿，是否完成遊戲？')) {
+                checkSolution(true); // 自動檢查答案
+            }
+        }
     }
 }
